@@ -2,6 +2,7 @@ package com.projectdc.application.transaction.endpoint.implement;
 
 import com.projectdc.request.GetAddressRequest;
 import com.projectdc.request.PostAddressRequest;
+import com.projectdc.response.DeleteAddressResponse;
 import com.projectdc.response.PostAddressResponse;
 import com.projectdc.application.transaction.endpoint.AddressEndPointIF;
 import com.projectdc.operation.AddressOperationIF;
@@ -48,6 +49,23 @@ public class AddressEndPoint implements AddressEndPointIF {
 
         try {
             response = this.addressOperationIF.operateInsertAddress(request);
+        }catch (Exception e){
+            response.setMessage(e.getLocalizedMessage());
+            return new ResponseEntity<>(response, response.apiError());
+        }
+
+        return new ResponseEntity<>(response, response.getStatus());
+    }
+
+    /**
+     * @return ResponseEntity&lt;DeleteAddressResponse&gt;
+     */
+    @Override
+    public ResponseEntity<DeleteAddressResponse> deleteAddress() {
+        DeleteAddressResponse response = new DeleteAddressResponse();
+
+        try{
+            response = this.addressOperationIF.operateDeleteAddress();
         }catch (Exception e){
             response.setMessage(e.getLocalizedMessage());
             return new ResponseEntity<>(response, response.apiError());
